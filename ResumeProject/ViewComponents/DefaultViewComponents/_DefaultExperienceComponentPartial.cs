@@ -1,12 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ResumeProject.Context;
 
 namespace ResumeProject.ViewComponents.DefaultViewComponents
 {
     public class _DefaultExperienceComponentPartial : ViewComponent
     {
+        private readonly ResumeContext _context;
+
+        public _DefaultExperienceComponentPartial(ResumeContext context)
+        {
+            _context = context;
+        }
+
         public IViewComponentResult Invoke()
         {
-            return View();
+            var values = _context.Experiences.ToList();
+            return View(values);
         }
     }
 }
