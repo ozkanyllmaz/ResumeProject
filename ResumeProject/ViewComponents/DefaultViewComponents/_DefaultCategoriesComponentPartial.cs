@@ -3,18 +3,17 @@ using ResumeProject.Context;
 
 namespace ResumeProject.ViewComponents.DefaultViewComponents
 {
-    public class _DefaultPortfolioComponentPartial : ViewComponent
+    public class _DefaultCategoriesComponentPartial : ViewComponent
     {
         private readonly ResumeContext _context;
 
-        public _DefaultPortfolioComponentPartial(ResumeContext context)
+        public _DefaultCategoriesComponentPartial(ResumeContext context)
         {
             _context = context;
         }
-
         public IViewComponentResult Invoke()
         {
-            var values = _context.Portfolios.ToList();
+            var values = _context.Categories.ToList();
             return View(values);
         }
     }
