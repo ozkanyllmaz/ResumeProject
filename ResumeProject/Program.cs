@@ -1,10 +1,20 @@
 using ResumeProject.Context;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSession(); //SESSÝON ÝÞLEMLERÝ
 
 // Add services to the container.
 builder.Services.AddDbContext<ResumeContext>(); //sonradan eklendi
 builder.Services.AddControllersWithViews();
+
+//Cookie ve autherization 
+builder.Services.AddAuthentication("CookieAuth")
+    .AddCookie("CookieAuth", options =>
+    {
+        options.LoginPath = "/Auth/Login";
+        options.AccessDeniedPath = "/Auth/Login";
+    });
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -19,7 +29,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
+app.UseSession();// SESSÝON ÝÞLEMLERÝ
+app.UseAuthentication();
 app.UseAuthorization();
 
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ResumeProject.Context;
 
 namespace ResumeProject.ViewComponents.DefaultViewComponents
@@ -16,5 +17,6 @@ namespace ResumeProject.ViewComponents.DefaultViewComponents
             var values = _context.Categories.ToList();
             return View(values);
         }
+
     }
 }

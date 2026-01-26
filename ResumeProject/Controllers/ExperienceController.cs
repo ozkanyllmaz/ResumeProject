@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ResumeProject.Context;
 using ResumeProject.Entities;
 
 namespace ResumeProject.Controllers
 {
+    [Authorize]
     public class ExperienceController : Controller
     {
         private readonly ResumeContext _context;
@@ -15,6 +17,7 @@ namespace ResumeProject.Controllers
 
         public IActionResult ExperienceList()
         {
+            ViewBag.ActiveMenu = "Experience";
             var values = _context.Experiences.ToList();
             return View(values);
         }

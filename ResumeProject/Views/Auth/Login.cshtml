@@ -1,0 +1,133 @@
+﻿@model ResumeProject.Entities.Auth
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html class="dark" lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13b6ec",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#101d22",
+                        "card-dark": "#111618",
+                        "input-dark": "#1c2427",
+                        "border-dark": "#3b4d54"
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: "Space Grotesk", sans-serif;
+        }
+
+        .glow-border {
+            box-shadow: 0 0 15px rgba(19, 182, 236, 0.2);
+            border: 1px solid rgba(19, 182, 236, 0.4);
+        }
+
+        .bg-pattern {
+            background-color: #101d22;
+            background-image: radial-gradient(#13b6ec 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+            opacity: 0.1;
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex flex-col relative overflow-x-hidden">
+    <!-- Geometric Background Pattern -->
+    <div class="bg-pattern" data-alt="Subtle geometric dot pattern background"></div>
+    <div class="relative z-10 flex flex-col min-h-screen">
+        <!-- Main Content -->
+        <main class="flex-1 flex items-center justify-center p-6">
+            <div class="w-full max-w-[480px] bg-card-dark rounded-xl glow-border p-8 md:p-10 flex flex-col gap-6">
+                <!-- Headline -->
+                <div class="text-center space-y-2">
+                    <h1 class="text-white text-4xl font-bold tracking-tight font-display">Giriş Yap</h1>
+                    <p class="text-[#9db2b9] text-sm">Yönetim paneline erişmek için bilgilerinizi girin.</p>
+                </div>
+                <form method="post" asp-action="Login" class="flex flex-col gap-5 mt-4">
+                    <div class="flex flex-col gap-5 mt-4">
+                        <!-- Email Field -->
+                        <div class="flex flex-col gap-2">
+                            <p class="text-white text-sm font-medium leading-normal ml-1">Email</p>
+                            <div class="flex w-full items-stretch rounded-xl overflow-hidden group">
+                                <input asp-for="Email" class="form-input flex-1 bg-input-dark border border-border-dark border-r-0 rounded-l-xl text-white focus:outline-0 focus:ring-1 focus:ring-primary focus:border-primary h-14 placeholder:text-[#9db2b9]/50 px-4 text-base font-normal transition-all" placeholder="E-posta adresinizi girin" type="email" />
+                                <div class="bg-input-dark border border-border-dark border-l-0 pr-4 flex items-center justify-center rounded-r-xl group-focus-within:border-primary group-focus-within:ring-1 group-focus-within:ring-primary">
+                                    <span class="material-symbols-outlined text-[#9db2b9]">mail</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Password Field -->
+                        <div class="flex flex-col gap-2">
+                            <div class="flex justify-between items-center ml-1">
+                                <p class="text-white text-sm font-medium leading-normal">Şifre</p>
+                                <a class="text-primary text-xs font-semibold hover:underline" href="#">Şifremi Unuttum</a>
+                            </div>
+                            <div class="flex w-full items-stretch rounded-xl overflow-hidden group">
+                                <input asp-for="Password" class="form-input flex-1 bg-input-dark border border-border-dark border-r-0 rounded-l-xl text-white focus:outline-0 focus:ring-1 focus:ring-primary focus:border-primary h-14 placeholder:text-[#9db2b9]/50 px-4 text-base font-normal transition-all" placeholder="Şifrenizi girin" type="password" />
+                                <div class="bg-input-dark border border-border-dark border-l-0 pr-4 flex items-center justify-center rounded-r-xl group-focus-within:border-primary group-focus-within:ring-1 group-focus-within:ring-primary">
+                                    <span class="material-symbols-outlined text-[#9db2b9] cursor-pointer hover:text-white">visibility</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Remember Me -->
+                        <div class="flex items-center">
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <div class="relative flex items-center">
+                                    <input class="peer h-5 w-5 rounded border-border-dark border-2 bg-transparent text-primary checked:bg-primary checked:border-primary focus:ring-0 focus:ring-offset-0 focus:outline-none transition-all" type="checkbox" />
+                                    <span class="material-symbols-outlined absolute opacity-0 peer-checked:opacity-100 text-background-dark pointer-events-none text-sm font-bold">check</span>
+                                </div>
+                                <p class="text-[#9db2b9] text-sm font-normal group-hover:text-white transition-colors">Beni Hatırla</p>
+                            </label>
+                        </div>
+                        <!-- Login Button -->
+                        <button class="w-full bg-primary hover:bg-primary/90 text-background-dark font-bold text-base h-14 rounded-xl shadow-lg shadow-primary/20 transition-all active:scale-[0.98] mt-2">
+                            Giriş Yap
+                        </button>
+                    </div>
+                    <!-- Footer -->
+                    <div class="text-center pt-4 border-t border-white/5">
+                        <p class="text-[#9db2b9] text-sm">
+                            Henüz bir hesabınız yok mu?
+                            <a class="text-primary font-bold hover:underline ml-1" href="/Auth/Register">Hesap Oluştur</a>
+                        </p>
+                    </div>
+                </form>
+
+            </div>
+        </main>
+        <!-- Footer Info -->
+        <footer class="py-8 text-center text-[#9db2b9]/40 text-xs">
+            © Tüm hakları saklıdır.
+        </footer>
+    </div>
+</body>
+</html>

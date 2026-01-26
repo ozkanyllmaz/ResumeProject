@@ -1,37 +1,47 @@
-﻿<section id="about">
+﻿@model ResumeProject.Models.AboutViewModel
+
+<section id="about">
 	<div class="container">
 		<div class="section-title h2 text-center mb-8">
 			<h2 class="mb-0">Hakkımda</h2>
 			<span class="title-letter">H</span>
 		</div>
-		<div class="row">
+		@foreach(var item in Model.Abouts.Where(x=>x.IsActive == true))
+		{
+			<div class="row">
 			<div class="col-md-6 col-lg-4 d-none d-lg-block">
-				<img class="img-fluid w-100 rounded" src="/templates/html/demo/images/avatar.jpg" alt="">
+				<img class="img-fluid w-100 rounded" src="@item.ImageUrl" alt="">
 			</div>
 			<div class="col-lg-8">
-				<h3>Özkan Yılmaz</h3>
-				<p class="lead">Full-Stack Developer</p>
-				<p class="mb-5">sınıf bilgisayar mühendisliği öğrencisiyim. C# ve ASP.NET Core teknolojileriyle full-stack web geliştirme alanında kendimi aktif olarak geliştiriyorum. Katmanlı mimari, RESTful API’ler, veritabanı yönetimi ve modern web uygulamaları üzerine projeler geliştirdim. Öğrenmeye açık, analitik düşünebilen ve yazılım geliştirme süreçlerinde sorumluluk almaktan çekinmeyen bir geliştiriciyim.</p>
+				<h3>@item.NameSurname</h3>
+				<p class="lead">@item.Title</p>
+				<p class="mb-5">@item.Description</p>
 				<div class="row mb-8">
 					<div class="col-md-6 mb-5 mb-md-0">
 						<h4 class="mb-4">Eğitimlerim</h4>
-						<p class="h5">MA Online Marketing</p>
-						<p>New York University, 2000 - 2003</p>
-						<p class="h5">BA Business & Marketing</p>
-						<p>Silver Oak College, 1998 - 2000</p>
+							@foreach(var x in Model.Educations)
+							{
+								<p class="h5">@x.Section</p>
+								<p>@x.School, @x.Date</p>
+							}
 					</div>
 
 					<div class="col-md-6">
 						<h4 class="mb-4">Deneyimlerim</h4>
-						<p class="h5">Best Product Launch</p>
-						<p>FGA Marketing Awards, 2015</p>
-						<p class="h5">Highly Commended</p>
-						<p>Women in Business, 2010</p>
+							@foreach(var x in Model.Experiences)
+							{
+								<p class="h5">@x.Title</p>
+								<p>@x.Description.Substring(0,200).., <br />@x.WorkDate</p>
+							}
 					</div>
 				</div>
-				<a href="#" class="btn btn-primary">CV İndir</a>
+					<a href="@Url.Action("DownloadCV", "About")" class="btn btn-primary">
+						<i class="fas fa-download"></i> Cv İndir
+					</a>
 				<a href="#contact" class="btn btn-light scrollto">Mesaj Gönder</a>
 			</div>
 		</div>
+		}
+		
 	</div>
 </section>

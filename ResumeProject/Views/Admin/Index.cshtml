@@ -1,4 +1,6 @@
-﻿
+﻿@inject ResumeProject.Context.ResumeContext _context
+
+
 @{
     Layout = null;
 }
@@ -10,10 +12,24 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Developer Portfolio Admin Dashboard</title>
+
+    <!-- ⚠️ TEMA KONTROLÜ - Sayfa yüklenmeden önce çalışır -->
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('theme-mode');
+            if (savedTheme === 'dark' || !savedTheme) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
+
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/themify-icons@0.1.2/css/themify-icons.css">
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -47,63 +63,131 @@
         }
     </style>
 </head>
-<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex overflow-hidden">
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 h-screen flex overflow-y-scroll">
     <!-- Fixed Vertical Sidebar -->
     <aside class="w-64 flex-shrink-0 bg-white dark:bg-[#111618] border-r border-slate-200 dark:border-[#283539] flex flex-col h-screen">
         <div class="p-6 flex items-center gap-3">
+            @{
+                // Mevcut kullanıcı bilgileri
+                var about = _context.Abouts.FirstOrDefault();
+                var adminName = about?.NameSurname ?? "Admin User";
+                var parts = adminName.Split(' ');
+                var initials = parts.Length > 1
+                ? parts[0].Substring(0, 1) + parts[parts.Length - 1].Substring(0, 1)
+                : parts[0].Substring(0, Math.Min(2, parts[0].Length));
+                var titleName = about?.Title ?? "Administrator";
+
+                // 🔥 YENİ EKLENEN KISIM: O anki Controller adını alıyoruz
+                var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+            }
             <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-background-dark font-bold text-xl">
-                JD
+                @initials
             </div>
-            <div class="flex flex-col">
-                <h1 class="text-sm font-bold leading-tight">Senior .NET Dev</h1>
-                <p class="text-xs text-slate-500 dark:text-[#9db2b9]">Admin Portal</p>
-            </div>
+            <a href="/Dashboard/DashboardList">
+                
+                <div class="flex flex-col">
+                    <h1 class="text-sm font-bold leading-tight">@titleName</h1>
+                    <p class="text-xs text-slate-500 dark:text-[#9db2b9]">Admin Portal</p>
+                </div>
+            </a>
+            
         </div>
+
         <nav class="flex-1 px-4 py-2 space-y-1 overflow-y-auto">
-            <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-[#9db2b9] hover:bg-slate-100 dark:hover:bg-[#1c2427] transition-colors" href="#">
-                <span class="material-symbols-outlined text-[22px]">dashboard</span>
-                <span class="text-sm font-medium">Dashboard</span>
+
+            <a href="/Dashboard/DashboardList"
+               class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors h-10
+               @(currentController == "Dashboard"
+                                ? "bg-primary/10 dark:bg-primary/20 text-primary font-bold"
+                                : "text-slate-600 dark:text-[#9db2b9] hover:bg-slate-100 dark:hover:bg-[#1c2427]")">
+                <span class="material-symbols-outlined text-[22px] flex-shrink-0">dashboard</span>
+                <span class="text-sm font-medium">Ana Sayfa</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-[#9db2b9] hover:bg-slate-100 dark:hover:bg-[#1c2427] transition-colors" href="#">
-                <span class="material-symbols-outlined text-[22px]">person</span>
-                <span class="text-sm font-medium">About Me</span>
+
+            <a href="/About/Index"
+               class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors h-10
+               @(currentController == "About"
+                                ? "bg-primary/10 dark:bg-primary/20 text-primary font-bold"
+                                : "text-slate-600 dark:text-[#9db2b9] hover:bg-slate-100 dark:hover:bg-[#1c2427]")">
+                <span class="material-symbols-outlined text-[22px] flex-shrink-0">person</span>
+                <span class="text-sm font-medium">Hakkımda</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-[#9db2b9] hover:bg-slate-100 dark:hover:bg-[#1c2427] transition-colors" href="#">
-                <span class="material-symbols-outlined text-[22px]">psychology</span>
-                <span class="text-sm font-medium">Skills</span>
+
+            <a href="/Skills/SkillList"
+               class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors h-10
+               @(currentController == "Skills"
+                                ? "bg-primary/10 dark:bg-primary/20 text-primary font-bold"
+                                : "text-slate-600 dark:text-[#9db2b9] hover:bg-slate-100 dark:hover:bg-[#1c2427]")">
+                <span class="material-symbols-outlined text-[22px] flex-shrink-0">psychology</span>
+                <span class="text-sm font-medium">Yetenek&Teknoloji</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-[#9db2b9] hover:bg-slate-100 dark:hover:bg-[#1c2427] transition-colors" href="#">
-                <span class="material-symbols-outlined text-[22px]">work</span>
-                <span class="text-sm font-medium">Experience</span>
+
+            <a href="/Experience/ExperienceList"
+               class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors h-10
+               @(currentController == "Experience"
+                                ? "bg-primary/10 dark:bg-primary/20 text-primary font-bold"
+                                : "text-slate-600 dark:text-[#9db2b9] hover:bg-slate-100 dark:hover:bg-[#1c2427]")">
+                <span class="material-symbols-outlined text-[22px] flex-shrink-0">work</span>
+                <span class="text-sm font-medium">Deneyimler</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary transition-colors" href="#">
-                <span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1">folder</span>
-                <span class="text-sm font-bold">Projects</span>
+
+            <a href="/Portfolio/PortfolioList"
+               class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors h-10
+               @(currentController == "Portfolio"
+                                ? "bg-primary/10 dark:bg-primary/20 text-primary font-bold"
+                                : "text-slate-600 dark:text-[#9db2b9] hover:bg-slate-100 dark:hover:bg-[#1c2427]")">
+                <span class="material-symbols-outlined text-[22px] flex-shrink-0" style="font-variation-settings:'FILL' 1">folder</span>
+                <span class="text-sm font-medium">Projeler</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-[#9db2b9] hover:bg-slate-100 dark:hover:bg-[#1c2427] transition-colors" href="#">
-                <span class="material-symbols-outlined text-[22px]">school</span>
-                <span class="text-sm font-medium">Education</span>
+
+            <a href="/Education/EducationList"
+               class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors h-10
+               @(currentController == "Education"
+                                ? "bg-primary/10 dark:bg-primary/20 text-primary font-bold"
+                                : "text-slate-600 dark:text-[#9db2b9] hover:bg-slate-100 dark:hover:bg-[#1c2427]")">
+                <span class="material-symbols-outlined text-[22px] flex-shrink-0">school</span>
+                <span class="text-sm font-medium">Eğitimler</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-[#9db2b9] hover:bg-slate-100 dark:hover:bg-[#1c2427] transition-colors" href="#">
-                <span class="material-symbols-outlined text-[22px]">verified</span>
-                <span class="text-sm font-medium">Certificates</span>
+
+            <a href="/Service/ServiceList"
+               class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors h-10
+               @(currentController == "Service"
+                                ? "bg-primary/10 dark:bg-primary/20 text-primary font-bold"
+                                : "text-slate-600 dark:text-[#9db2b9] hover:bg-slate-100 dark:hover:bg-[#1c2427]")">
+                <span class="material-symbols-outlined text-[22px] flex-shrink-0">build</span>
+                <span class="text-sm font-medium">Hizmetler</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-[#9db2b9] hover:bg-slate-100 dark:hover:bg-[#1c2427] transition-colors" href="#">
-                <span class="material-symbols-outlined text-[22px]">description</span>
-                <span class="text-sm font-medium">Blog</span>
+
+            <a href="/Testimonial/TestimonialList"
+               class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors h-10
+               @(currentController == "Testimonial"
+                                               ? "bg-primary/10 dark:bg-primary/20 text-primary font-bold"
+                                               : "text-slate-600 dark:text-[#9db2b9] hover:bg-slate-100 dark:hover:bg-[#1c2427]")">
+                <span class="material-symbols-outlined text-[22px] flex-shrink-0">reviews</span>
+                <span class="text-sm font-medium">Referanslar</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-[#9db2b9] hover:bg-slate-100 dark:hover:bg-[#1c2427] transition-colors" href="#">
-                <span class="material-symbols-outlined text-[22px]">mail</span>
-                <span class="text-sm font-medium">Messages</span>
+
+            <a href="/Message/MessageList"
+               class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors h-10
+               @(currentController == "Message"
+                                ? "bg-primary/10 dark:bg-primary/20 text-primary font-bold"
+                                : "text-slate-600 dark:text-[#9db2b9] hover:bg-slate-100 dark:hover:bg-[#1c2427]")">
+                <span class="material-symbols-outlined text-[22px] flex-shrink-0">mail</span>
+                <span class="text-sm font-medium">Mesajlar</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-[#9db2b9] hover:bg-slate-100 dark:hover:bg-[#1c2427] transition-colors mt-auto" href="#">
-                <span class="material-symbols-outlined text-[22px]">settings</span>
-                <span class="text-sm font-medium">Settings</span>
+
+            <a href="/Settings/SettingsIndex"
+               class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors mt-auto
+                 @(currentController == "Settings"
+                                ? "bg-primary/10 dark:bg-primary/20 text-primary font-bold"
+                                : "text-slate-600 dark:text-[#9db2b9] hover:bg-slate-100 dark:hover:bg-[#1c2427]")">
+                <span class="material-symbols-outlined text-[22px] flex-shrink-0">settings</span>
+                <span class="text-sm font-medium">Ayarlar</span>
             </a>
         </nav>
     </aside>
     <!-- Main Content Area -->
-    <main class="flex-1 flex flex-col min-w-0 bg-background-light dark:bg-background-dark overflow-hidden">
+    <main class="flex-1 flex flex-col min-w-0 bg-background-light dark:bg-background-dark">
         <!-- Top Navbar -->
         <header class="h-16 flex items-center justify-between px-8 bg-white dark:bg-[#111618] border-b border-slate-200 dark:border-[#283539] z-10">
             <div class="flex items-center gap-2">
@@ -111,22 +195,58 @@
                 <h2 class="text-lg font-bold tracking-tight">Developer Admin Panel</h2>
             </div>
             <div class="flex items-center gap-6">
-                <button class="relative p-2 text-slate-500 dark:text-[#9db2b9] hover:bg-slate-100 dark:hover:bg-[#283539] rounded-lg transition-colors">
-                    <span class="material-symbols-outlined">notifications</span>
-                    <span class="absolute top-2 right-2.5 w-2 h-2 bg-primary rounded-full border-2 border-white dark:border-[#111618]"></span>
-                </button>
-                <div class="flex items-center gap-3 pl-4 border-l border-slate-200 dark:border-[#283539]">
-                    <div class="text-right hidden sm:block">
-                        <p class="text-xs font-bold">John Doe</p>
-                        <p class="text-[10px] text-primary">Senior Developer</p>
+                <a href="/Message/MessageList/" class="relative p-2 text-slate-500 dark:text-[#9db2b9] hover:bg-slate-100 dark:hover:bg-[#283539] rounded-lg transition-colors">
+                    <span class="material-symbols-outlined">mail</span>
+                    <span class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1
+                 bg-primary text-white text-[11px] font-bold
+                 rounded-full flex items-center justify-center
+                 border-2 border-white dark:border-[#111618]">
+                        @{
+                            var messages = _context.Messages.ToList();
+                            var unReadMessageCount = messages.Count(x => x.IsRead == false);
+                        }
+                        @unReadMessageCount
+                    </span>
+                </a>
+
+
+                <div class="relative inline-block">
+                    <!-- Trigger -->
+                    <button onclick="toggleProfileMenu()"
+                            class="flex items-center gap-3 pl-4 border-l border-slate-200 dark:border-[#283539] hover:bg-slate-100 dark:hover:bg-[#1c2427] transition rounded-lg py-2">
+
+                        <div class="text-right hidden sm:block">
+                            <p class="text-xs font-bold">@adminName</p>
+                            <p class="text-[10px] text-primary">@titleName</p>
+                        </div>
+
+                        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-background-dark font-bold">
+                            @initials
+                        </div>
+                    </button>
+
+                    <!-- Dropdown -->
+                    <div id="profileMenu"
+                         class="hidden absolute right-0 mt-2 w-40 bg-white dark:bg-[#111618]
+                border border-slate-200 dark:border-[#283539]
+                rounded-lg shadow-lg z-50">
+
+                        <a asp-controller="Auth" asp-action="Logout"
+                           class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200
+                  hover:bg-slate-100 dark:hover:bg-[#1c2427] rounded-lg">
+                            🚪 Logout
+                        </a>
                     </div>
-                    <div class="w-10 h-10 rounded-full bg-slate-200 bg-cover bg-center" data-alt="Professional headshot of a male developer" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCHbt4yI-strfVEuX0x8SAH4oMcokffsW8B0GDt_2uhoIKCbC4WglxcrR5FQjO2PnwAfuwPggUnbOtOE0InF8n8RXTqEfAZuWn99dBP6YgZVVhsijmhWwR7oohVkQqUDZdj7HV1aa1Nq0JdwsTi1D6hqS082K1FZpbP-zq6SllmfeolrAhvelQwxQTnrbqcbIW0M0ymZ1S3SW1Y2CJ1fJt6EOTgWe4K0PmwPytTzn6ZDRj0MxX8GAF49bJlkCOI-OW55fJuGlhsTj8');"></div>
                 </div>
+
+
             </div>
         </header>
-        <!-- Scrollable Dashboard Content -->
 
-        @RenderBody()
+        <!-- Scrollable Dashboard Content -->
+        
+            @RenderBody()
+        
 
         <!-- Float Action Button for Mobile / Quick Access -->
         <div class="fixed bottom-8 right-8 lg:hidden">
@@ -135,5 +255,19 @@
             </button>
         </div>
     </main>
+    <script>
+        function toggleProfileMenu() {
+            document.getElementById("profileMenu").classList.toggle("hidden");
+        }
+
+        // Dışarı tıklanınca kapansın
+        document.addEventListener("click", function (e) {
+            const menu = document.getElementById("profileMenu");
+            if (!e.target.closest(".relative")) {
+                menu.classList.add("hidden");
+            }
+        });
+    </script>
+
 </body>
 </html>

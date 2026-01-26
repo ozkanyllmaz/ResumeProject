@@ -1,0 +1,158 @@
+﻿@inject ResumeProject.Context.ResumeContext _context
+@model ResumeProject.Entities.Auth
+
+@{
+    ViewData["Title"] = "SettingsIndex";
+    Layout = "~/Views/Admin/Index.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html class="dark" lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Sistem Ayarları - Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "var(--primary-color)",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#101e22",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        :root {
+            --primary-color: #0db9f2;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-white">
+    <div class="layout-container flex h-full grow flex-col">
+        <!-- Top Navigation Bar -->
+        <main class="flex flex-1 justify-center py-10 px-4 md:px-10 lg:px-40">
+            <div class="layout-content-container flex flex-col max-w-[960px] flex-1 gap-8">
+                <!-- Page Heading -->
+                <div class="flex flex-col gap-2">
+                    <h1 class="text-white text-4xl font-black leading-tight tracking-[-0.033em]">Sistem Ayarları</h1>
+                    <p class="text-[#9cb2ba] text-lg font-normal">Uygulama tercihlerini ve profil bilgilerinizi buradan yönetebilirsiniz.</p>
+                </div>
+                <!-- Görünüm Ayarları Section -->
+                <section class="flex flex-col gap-6 p-6 rounded-xl border border-[#3b4e54] bg-[#111618]">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">palette</span>
+                        <h2 class="text-white text-2xl font-bold leading-tight tracking-[-0.015em]">Görünüm Ayarları</h2>
+                    </div>
+                    <!-- Theme Mode Selector -->
+                    <div class="flex flex-col gap-4">
+                        <p class="text-[#9cb2ba] text-sm font-medium">Tema Modu</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Light Mode Card -->
+                            <label class="cursor-pointer group">
+                                <input class="hidden peer" name="theme-mode" type="radio" onclick="setThemeMode('light')" />
+                                <div class="relative overflow-hidden rounded-xl border-2 border-transparent bg-[#1b2427] p-2 transition-all peer-checked:border-primary group-hover:bg-[#283539]">
+                                    <div class="w-full aspect-video rounded-lg bg-white p-2 flex flex-col gap-1 shadow-inner" data-alt="Mockup of the light user interface theme">
+                                        <div class="h-2 w-1/2 bg-gray-200 rounded"></div>
+                                        <div class="h-2 w-3/4 bg-gray-100 rounded"></div>
+                                        <div class="mt-auto flex justify-end">
+                                            <div class="h-4 w-4 bg-primary rounded-sm"></div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between px-2 pt-3 pb-1">
+                                        <span class="text-sm font-bold">Açık Tema</span>
+                                        <span class="material-symbols-outlined text-primary opacity-0 peer-checked:opacity-100">check_circle</span>
+                                    </div>
+                                </div>
+                            </label>
+                            <!-- Dark Mode Card -->
+                            <label class="cursor-pointer group">
+                                <input checked class="hidden peer" name="theme-mode" type="radio" onclick="setThemeMode('dark')" />
+                                <div class="relative overflow-hidden rounded-xl border-2 border-transparent bg-[#1b2427] p-2 transition-all peer-checked:border-primary group-hover:bg-[#283539]">
+                                    <div class="w-full aspect-video rounded-lg bg-[#101e22] p-2 flex flex-col gap-1 shadow-inner border border-[#3b4e54]" data-alt="Mockup of the dark user interface theme">
+                                        <div class="h-2 w-1/2 bg-[#283539] rounded"></div>
+                                        <div class="h-2 w-3/4 bg-[#1b2427] rounded"></div>
+                                        <div class="mt-auto flex justify-end">
+                                            <div class="h-4 w-4 bg-primary rounded-sm"></div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between px-2 pt-3 pb-1">
+                                        <span class="text-sm font-bold">Koyu Tema</span>
+                                        <span class="material-symbols-outlined text-primary">check_circle</span>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                </section>
+                <!-- Profil Ayarları Section -->
+                <section class="flex flex-col gap-6 p-6 rounded-xl border border-[#3b4e54] bg-[#111618]">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">person</span>
+                        <h2 class="text-white text-2xl font-bold leading-tight tracking-[-0.015em]">Profil Ayarları</h2>
+                    </div>
+
+                    <partial name="_UpdatePassword" />
+
+
+                </section>
+                
+            </div>
+        </main>
+    </div>
+    <script>
+        function setThemeMode(mode) {
+            if (mode === 'dark') {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme-mode', 'dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme-mode', 'light');
+            }
+
+            // Tema değişikliğini diğer sekmelere de bildir
+            window.dispatchEvent(new Event('storage'));
+        }
+
+        // Sayfa yüklendiğinde mevcut temayı ayarla
+        window.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme-mode');
+            const darkRadio = document.querySelector('input[name="theme-mode"][onclick*="dark"]');
+            const lightRadio = document.querySelector('input[name="theme-mode"][onclick*="light"]');
+
+            if (savedTheme === 'light') {
+                lightRadio.checked = true;
+                darkRadio.checked = false;
+            } else {
+                darkRadio.checked = true;
+                lightRadio.checked = false;
+            }
+        });
+    </script>
+
+
+</body>
+</html>
+

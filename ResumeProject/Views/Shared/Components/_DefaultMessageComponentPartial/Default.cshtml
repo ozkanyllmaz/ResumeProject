@@ -1,0 +1,42 @@
+﻿@model ResumeProject.Entities.Message
+
+<div class="contact-form-disabled-by-me">
+	<form class="mb-0" asp-controller="Message" asp-action="SendMessageToAdmin" method="post" autocomplete="off">
+		<div class="form-row">
+			
+
+			<div class="col-12 col-md-6">
+				<div class="form-group error-text-white">
+					<input asp-for="NameSurname" type="text" placeholder="İsminizi girin" class="form-control required">
+				</div>
+			</div>
+
+			<div class="col-12 col-md-6">
+				<div class="form-group error-text-white">
+					<input asp-for="SenderEmail" type="email" placeholder="Mail adresinizi girin" class="form-control required">
+				</div>
+			</div>
+
+			<div class="col-12">
+				<div class="form-group error-text-white">
+					<input asp-for="Subject" type="text"  placeholder="Konu" class="form-control">
+				</div>
+			</div>
+
+			<div class="col-12 mb-4">
+				<div class="form-group error-text-white">
+					<textarea asp-for="MessageDetail"  placeholder="Mesajınızı girin" class="form-control required" rows="7"></textarea>
+				</div>
+			</div>
+
+			<div class="col-12 d-none">
+				<input type="text"  name="cf-botcheck" value="" class="form-control" />
+			</div>
+
+			<div class="col-12 text-center">
+				<button class="btn btn-primary" type="submit"  name="cf-submit">Mesaj Gönder</button>
+			</div>
+		</div>
+	</form>
+	<div class="contact-form-result text-center"></div>
+</div>

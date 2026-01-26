@@ -12,9 +12,8 @@
 					<li><a href="#" class="active" data-filter="*">Tüm Kategoriler</a></li>
 					@foreach(var item in Model)
 					{
-						<li><a href="#" data-filter=".web">@item.Name</a></li>
+						<li><a href="#" data-filter=".category-@item.CategoryId">@item.Name</a></li>
 					}
-					
 				</ul>
 			</nav>
 		</div>

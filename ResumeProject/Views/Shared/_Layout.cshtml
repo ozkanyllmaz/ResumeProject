@@ -8,8 +8,37 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ResumeProject.styles.css" asp-append-version="true" />
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#0db9f2",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#101e22",
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('theme-mode');
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
+
 </head>
-<body>
+<body class="bg-white dark:bg-background-dark text-black dark:text-white">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -46,5 +75,22 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script src="assets/vendor/vegas/vegas.min.js"></script>
+
+    <script>
+        $(function() {
+            $('#page-cover').vegas({
+                overlay: true,
+                slides: [
+                    { src: 'https://cdn.wallpapersafari.com/87/48/taUzDv.jpg' }
+                ],
+                transition: 'fade',
+                transitionDuration: 2000,
+                delay: 5000,
+                animation: 'random'
+            });
+        });
+    </script>
 </body>
 </html>

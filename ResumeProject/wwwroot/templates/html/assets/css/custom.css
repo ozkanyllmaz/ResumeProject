@@ -1,1 +1,4 @@
-﻿/* Place Your Custom Styles Here */
+﻿#page-cover {
+    background-size: cover;
+    background-position: center;
+}

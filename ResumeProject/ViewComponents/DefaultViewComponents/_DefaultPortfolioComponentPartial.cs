@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ResumeProject.Context;
 
 namespace ResumeProject.ViewComponents.DefaultViewComponents
@@ -14,7 +15,9 @@ namespace ResumeProject.ViewComponents.DefaultViewComponents
 
         public IViewComponentResult Invoke()
         {
-            var values = _context.Portfolios.ToList();
+            var values = _context.Portfolios
+                .Include(x=>x.Category)
+                .ToList();
             return View(values);
         }
     }
